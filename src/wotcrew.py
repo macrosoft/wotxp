@@ -9,8 +9,10 @@ from debug_utils import *
 def numWithPostfix(value):
     if value < 1000:
         return str(int(value))
-    elif value < 1000000:
+    elif value < 100000:
         return '{:0.1f}k'.format(value/1000.0)
+    elif value < 1000000:
+        return '{0:d}k'.format(int(math.ceil(value/1000.0)))
     else:
         return '{:0.1f}M',format(value/1000000.0)
 
