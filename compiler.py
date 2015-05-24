@@ -2,15 +2,15 @@ import py_compile, zipfile, os
 
 WOTVersion = "0.9.8 Common Test"
 
-if os.path.exists("wotcrew.zip"):
-    os.remove("wotcrew.zip")
+if os.path.exists("wotxp.zip"):
+    os.remove("wotxp.zip")
 
 py_compile.compile("src/__init__.py")
 py_compile.compile("src/CameraNode.py")
-py_compile.compile("src/wotcrew.py")
+py_compile.compile("src/wotxp.py")
 
-fZip = zipfile.ZipFile("wotcrew.zip", "w")
+fZip = zipfile.ZipFile("wotxp.zip", "w")
 fZip.write("src/__init__.pyc", WOTVersion+"/scripts/client/mods/__init__.pyc")
-fZip.write("src/wotcrew.pyc", WOTVersion+"/scripts/client/mods/wotcrew.pyc")
+fZip.write("src/wotxp.pyc", WOTVersion+"/scripts/client/mods/wotxp.pyc")
 fZip.write("src/CameraNode.pyc", WOTVersion+"/scripts/client/CameraNode.pyc")
 fZip.close()

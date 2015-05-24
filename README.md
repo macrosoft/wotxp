@@ -1,7 +1,7 @@
-Wotcrew
-=======
+WotXP
+=====
 
-Extended information about the crew mod for World of Tanks
+Extended information about the crew and the vehicle mod for World of Tanks
 
 Compilation
 ===========
