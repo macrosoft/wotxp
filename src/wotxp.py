@@ -18,7 +18,7 @@ def numWithPostfix(value):
     elif value < 1000000:
         return '{0:d}k'.format(int(math.ceil(value/1000.0)))
     else:
-        return '{:0.1f}M',format(value/1000000.0)
+        return '{:0.1f}M'.format(value/1000000.0)
 
 old_cm_as_tankmenResponseS = CrewMeta.as_tankmenResponseS
 
