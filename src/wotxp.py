@@ -66,13 +66,12 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
         if node['state'] < NODE_STATE.VEHICLE_CAN_BE_CHANGED:
             requiredTopXp += node['unlockProps'].xpCost
     xp = g_itemsCache.items.stats.vehiclesXPs.get(g_currentVehicle.item.intCD, 0)
-    if requiredTopXp > xp:
-        requiredTopXp -= xp
+    freeXP = g_itemsCache.items.stats.actualFreeXP
+    requiredXp = 0
+    if requiredTopXp > 0:
+        requiredXp = max(requiredTopXp - xp - freeXP, 0)
     else:
-        xp -= requiredTopXp
-        requiredTopXp = 0
-        requiredEliteXp -= xp
-    requiredXp = requiredTopXp if requiredTopXp > 0 else max(0, requiredEliteXp)
+        requiredXp = max(requiredEliteXp - xp, 0)
     battleCount = numWithPostfix(math.ceil(requiredXp/avgXp)) if avgXp > 0 else 'X'
     description = vDescription +\
         ' [ {0} <img align="top" src="img://gui/maps//icons/library/BattleResultIcon-1.png" height="14" width="14" vspace="-3"/>'\
