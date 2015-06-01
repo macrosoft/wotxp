@@ -26,17 +26,21 @@ def new_cm_as_tankmenResponseS(self, data):
     for tankmenData in data['tankmen']:
         tankman = g_itemsCache.items.getTankman(tankmenData['tankmanID'])
         tankmanDossier = g_itemsCache.items.getTankmanDossier(tankman.invID)
-        avgXp = float(tankmanDossier.getAvgXP())
-        if tankman.isInTank:
-            vehicle = g_itemsCache.items.getVehicle(tankman.vehicleInvID)
-            if vehicle is not None and vehicle.isPremium:
-                avgXp = (avgXp + int(avgXp*(9 - max(min(vehicle.level, 9), 2))/10.0))*1.5
-        nextLevelBattleCount = numWithPostfix(math.ceil(tankman.getNextLevelXpCost()/avgXp)) if avgXp > 0 else 'X'
-        nextSkillBattleCount = numWithPostfix(math.ceil(tankman.getNextSkillXpCost()/avgXp)) if avgXp > 0 else 'X'
-        rankPrefix = '[{0}|{1}] '.format(nextLevelBattleCount, numWithPostfix(tankman.getNextLevelXpCost()))
-        rolePrefix = '[{0}|{1}] '.format(nextSkillBattleCount, numWithPostfix(tankman.getNextSkillXpCost()))
-        tankmenData['rank'] = rankPrefix + tankmenData['rank']
-        tankmenData['role'] = rolePrefix + tankmenData['role']
+        if tankman.hasNewSkill:
+            rankPrefix = '[+{0}] '.format(numWithPostfix(tankman.descriptor.freeXP))
+            tankmenData['rank'] = rankPrefix + tankmenData['rank']
+        else:
+            avgXp = float(tankmanDossier.getAvgXP())
+            if tankman.isInTank:
+                vehicle = g_itemsCache.items.getVehicle(tankman.vehicleInvID)
+                if vehicle is not None and vehicle.isPremium:
+                    avgXp = (avgXp + int(avgXp*(9 - max(min(vehicle.level, 9), 2))/10.0))*1.5
+            nextLevelBattleCount = numWithPostfix(math.ceil(tankman.getNextLevelXpCost()/avgXp)) if avgXp > 0 else 'X'
+            nextSkillBattleCount = numWithPostfix(math.ceil(tankman.getNextSkillXpCost()/avgXp)) if avgXp > 0 else 'X'
+            rankPrefix = '[{0}|{1}] '.format(nextLevelBattleCount, numWithPostfix(tankman.getNextLevelXpCost()))
+            rolePrefix = '[{0}|{1}] '.format(nextSkillBattleCount, numWithPostfix(tankman.getNextSkillXpCost()))
+            tankmenData['rank'] = rankPrefix + tankmenData['rank']
+            tankmenData['role'] = rolePrefix + tankmenData['role']
     old_cm_as_tankmenResponseS(self, data)
 
 CrewMeta.as_tankmenResponseS = new_cm_as_tankmenResponseS
