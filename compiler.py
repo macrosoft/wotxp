@@ -1,6 +1,6 @@
 import py_compile, zipfile, os
 
-WOTVersion = "0.9.8"
+WOTVersion = "0.9.8.1"
 
 if os.path.exists("wotxp.zip"):
     os.remove("wotxp.zip")
@@ -13,4 +13,5 @@ fZip = zipfile.ZipFile("wotxp.zip", "w")
 fZip.write("src/__init__.pyc", WOTVersion+"/scripts/client/mods/__init__.pyc")
 fZip.write("src/wotxp.pyc", WOTVersion+"/scripts/client/mods/wotxp.pyc")
 fZip.write("src/CameraNode.pyc", WOTVersion+"/scripts/client/CameraNode.pyc")
+fZip.write("data/wotxp.json", WOTVersion+"/scripts/client/mods/wotxp.json")
 fZip.close()

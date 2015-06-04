@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 import BigWorld
 import math
+import json
+import os
+import ResMgr
 from gui.Scaleform.daapi.view.meta.CrewMeta import CrewMeta
 from gui.Scaleform.daapi.view.meta.ResearchPanelMeta import ResearchPanelMeta
 from gui.shared import g_itemsCache
@@ -9,6 +12,22 @@ from CurrentVehicle import g_currentVehicle
 from gui.Scaleform.daapi.view.lobby.techtree import dumpers, NODE_STATE
 from gui.Scaleform.daapi.view.lobby.techtree.data import ResearchItemsData
 from debug_utils import *
+
+class WotXp(object):
+
+    def __init__(self):
+        self.config = {}
+        res = ResMgr.openSection('../paths.xml')
+        sb = res['Paths']
+        vals = sb.values()[0:2]
+        for vl in vals:
+            path = vl.asString + '/scripts/client/mods/'
+            if os.path.isdir(path):
+                conf_file = path + 'wotxp.json'
+                if os.path.isfile(conf_file):
+                    with open(conf_file) as data_file:
+                        self.config = json.load(data_file)
+                        break
 
 def numWithPostfix(value):
     if value < 1000:
@@ -73,9 +92,13 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
     freeXP = g_itemsCache.items.stats.actualFreeXP
     requiredXp = 0
     if requiredTopXp > 0:
-        requiredXp = max(requiredTopXp - xp - freeXP, 0)
+        requiredXp = max(requiredTopXp - xp, 0)
+        if wotxp.config.get("useFreeXpForModuleResearch", True):
+            requiredXp = max(requiredXp - freeXP, 0)
     else:
         requiredXp = max(requiredEliteXp - xp, 0)
+        if wotxp.config.get("useFreeXpForVehicleResearch", False):
+            requiredXp = max(requiredXp - freeXP, 0)
     battleCount = numWithPostfix(math.ceil(requiredXp/avgXp)) if avgXp > 0 else 'X'
     description = vDescription +\
         ' [ {0} <img align="top" src="img://gui/maps//icons/library/BattleResultIcon-1.png" height="14" width="14" vspace="-3"/>'\
@@ -84,3 +107,5 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
     old_rpm_as_updateCurrentVehicleS(self, name, type, description, earnedXP, isElite, isPremIGR)
 
 ResearchPanelMeta.as_updateCurrentVehicleS = new_rpm_as_updateCurrentVehicleS
+
+wotxp = WotXp()
