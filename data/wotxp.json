@@ -1,4 +1,5 @@
 {
     "useFreeXpForModuleResearch": true,
-    "useFreeXpForVehicleResearch": false
+    "useFreeXpForVehicleResearch": false,
+    "debug": false
 }

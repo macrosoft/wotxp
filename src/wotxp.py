@@ -81,6 +81,8 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
     requiredTopXp = 0
     requiredEliteXp = 0
     for node in research._getNodesToInvalidate():
+        if wotxp.config.get('debug', False):
+            LOG_NOTE(node)
         if node['state'] & NODE_STATE.UNLOCKED > 0:
             continue
         if node['state'] & NODE_STATE.VEHICLE_CAN_BE_CHANGED > 0 and node['displayInfo']['level'] < 0:
