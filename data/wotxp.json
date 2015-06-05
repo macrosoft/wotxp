@@ -1,5 +1,9 @@
 {
     "useFreeXpForModuleResearch": true,
     "useFreeXpForVehicleResearch": false,
+    "tankmanRankPrefix": "[{{nextLevelBattleCount}}|{{nextLevelXpCost}}] ",
+    "tankmanRolePrefix": "[{{nextSkillBattleCount}}|{{nextSkillXpCost}}] ",
+    "tankmanNewSkillRankPrefix": "[+{{freeXp}}] ",
+    "tankmanNewSkillRolePrefix": "",
     "debug": false
 }
