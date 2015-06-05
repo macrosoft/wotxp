@@ -92,7 +92,7 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
     research.setRootCD(g_currentVehicle.item.intCD)
     research.load()
     requiredTopXp = 0
-    requiredEliteXp = 0
+    requiredElitXp = 0
     for node in research._getNodesToInvalidate():
         if wotxp.config.get('debug', False):
             LOG_NOTE(node)
@@ -100,26 +100,54 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
             continue
         if node['state'] & NODE_STATE.VEHICLE_CAN_BE_CHANGED > 0 and node['displayInfo']['level'] < 0:
             continue
-        requiredEliteXp += node['unlockProps'].xpCost
+        requiredElitXp += node['unlockProps'].xpCost
         if node['state'] < NODE_STATE.VEHICLE_CAN_BE_CHANGED:
             requiredTopXp += node['unlockProps'].xpCost
     xp = g_itemsCache.items.stats.vehiclesXPs.get(g_currentVehicle.item.intCD, 0)
     freeXP = g_itemsCache.items.stats.actualFreeXP
-    requiredXp = 0
+    descriptionPostfix = ''
+    extraXp = 0
+    values = {}
     if requiredTopXp > 0:
-        requiredXp = max(requiredTopXp - xp, 0)
+        if requiredTopXp > xp:
+            requiredTopXp -= xp
+        else:
+            xp -= requiredTopXp
+            extraXp += xp
+            requiredTopXp = 0
         if wotxp.config.get("useFreeXpForModuleResearch", True):
-            requiredXp = max(requiredXp - freeXP, 0)
-    else:
-        requiredXp = max(requiredEliteXp - xp, 0)
+            if requiredTopXp > freeXP:
+                requiredTopXp -= freeXP
+            else:
+                extraXp += freeXP - requiredTopXp
+                requiredTopXp = 0
+        requiredElitXp = max(requiredElitXp - xp, 0)
         if wotxp.config.get("useFreeXpForVehicleResearch", False):
-            requiredXp = max(requiredXp - freeXP, 0)
-    battleCount = wotxp.numWithPostfix(math.ceil(requiredXp/avgXp)) if avgXp > 0 else 'X'
-    description = vDescription +\
-        ' [ {0} <img align="top" src="img://gui/maps//icons/library/BattleResultIcon-1.png" height="14" width="14" vspace="-3"/>'\
-        ' {1} <img align="top" src="img://gui/maps//icons/library/XpIcon-1.png" height="16" width="16" vspace="-3"/>]'.\
-        format(battleCount, wotxp.numWithPostfix(requiredXp))
-    old_rpm_as_updateCurrentVehicleS(self, name, type, description, earnedXP, isElite, isPremIGR)
+            requiredElitXp = max(requiredElitXp - freeXP, 0)
+        descriptionPostfix = wotxp.config.get("stockVehicle", "[{{topBattleCount}}|{{requiredTopXp}}]") \
+            if requiredTopXp > 0 else wotxp.config.get("stockVehicleResearchCompleted", " [+{{extraXp}}]")
+    else:
+        if requiredElitXp > xp:
+            requiredElitXp -= xp
+        else:
+            extraXp += xp - requiredElitXp
+            requiredElitXp = 0
+        if wotxp.config.get("useFreeXpForVehicleResearch", False):
+            if requiredElitXp > freeXp:
+                requiredElitXp -= freeXp
+            else:
+                extraXp += freeXp - requiredElitXp
+                requiredElitXp = 0
+        descriptionPostfix = wotxp.config.get("topVehicle", "[{{elitBattleCount}}|{{requiredElitXp}}]") \
+            if requiredElitXp > 0 else wotxp.config.get("topVehicleResearchCompleted", " [+{{extraXp}}]")
+    values['requiredTopXp'] = wotxp.numWithPostfix(requiredTopXp)
+    values['requiredElitXp'] = wotxp.numWithPostfix(requiredElitXp)
+    values['topBattleCount'] = wotxp.numWithPostfix(math.ceil(requiredTopXp/avgXp)) if avgXp > 0 else 'X'
+    values['elitBattleCount'] = wotxp.numWithPostfix(math.ceil(requiredElitXp/avgXp)) if avgXp > 0 else 'X'
+    values['extraXp'] = wotxp.numWithPostfix(extraXp)
+    for key in values.keys():
+        descriptionPostfix = descriptionPostfix.replace('{{%s}}' % key, values[key])
+    old_rpm_as_updateCurrentVehicleS(self, name, type, vDescription + descriptionPostfix, earnedXP, isElite, isPremIGR)
 
 ResearchPanelMeta.as_updateCurrentVehicleS = new_rpm_as_updateCurrentVehicleS
 

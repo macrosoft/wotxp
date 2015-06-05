@@ -1,9 +1,13 @@
 {
-    "useFreeXpForModuleResearch": true,
-    "useFreeXpForVehicleResearch": false,
     "tankmanRankPrefix": "[{{nextLevelBattleCount}}|{{nextLevelXpCost}}] ",
     "tankmanRolePrefix": "[{{nextSkillBattleCount}}|{{nextSkillXpCost}}] ",
     "tankmanNewSkillRankPrefix": "[+{{freeXp}}] ",
     "tankmanNewSkillRolePrefix": "",
+    "useFreeXpForModuleResearch": true,
+    "useFreeXpForVehicleResearch": false,
+    "stockVehicle": " [ {{topBattleCount}} <img align='top' src='img://gui/maps/icons/library/BattleResultIcon-1.png' height='14' width='14' vspace='-3'/> {{requiredTopXp}} <img align='top' src='img://gui/maps/icons/library/XpIcon-1.png' height='16' width='16' vspace='-3'/>]",
+    "stockVehicleResearchCompleted": " [ +{{extraXp}} <img align='top' src='img://gui/maps/icons/library/EliteXpIcon-2.png' height='16' width='16' vspace='-3'/>]",
+    "topVehicle": " [ {{elitBattleCount}} <img align='top' src='img://gui/maps/icons/library/BattleResultIcon-1.png' height='14' width='14' vspace='-3'/> {{requiredElitXp}} <img align='top' src='img://gui/maps/icons/library/XpIcon-1.png' height='16' width='16' vspace='-3'/>]",
+    "topVehicleResearchCompleted": " [ +{{extraXp}} <img align='top' src='img://gui/maps/icons/library/EliteXpIcon-2.png' height='16' width='16' vspace='-3'/>]",
     "debug": false
 }
