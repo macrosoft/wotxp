@@ -1,6 +1,6 @@
 import py_compile, zipfile, os
 
-WOTVersion = "0.9.8.1"
+WOTVersion = "0.9.10 Common Test"
 
 if os.path.exists("wotxp.zip"):
     os.remove("wotxp.zip")

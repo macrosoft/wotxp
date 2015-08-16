@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 import BigWorld
 import math
 import json
@@ -9,7 +10,8 @@ from gui.Scaleform.daapi.view.meta.CrewMeta import CrewMeta
 from gui.Scaleform.daapi.view.meta.ResearchPanelMeta import ResearchPanelMeta
 from gui.shared import g_itemsCache
 from CurrentVehicle import g_currentVehicle
-from gui.Scaleform.daapi.view.lobby.techtree import dumpers, NODE_STATE
+from gui.Scaleform.daapi.view.lobby.techtree import dumpers
+from gui.Scaleform.daapi.view.lobby.techtree.settings import NODE_STATE
 from gui.Scaleform.daapi.view.lobby.techtree.data import ResearchItemsData
 from debug_utils import *
 
