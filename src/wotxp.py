@@ -134,10 +134,10 @@ def new_rpm_as_updateCurrentVehicleS(self, name, type, vDescription, earnedXP, i
             extraXp += xp - requiredElitXp
             requiredElitXp = 0
         if wotxp.config.get("useFreeXpForVehicleResearch", False):
-            if requiredElitXp > freeXp:
-                requiredElitXp -= freeXp
+            if requiredElitXp > freeXP:
+                requiredElitXp -= freeXP
             else:
-                extraXp += freeXp - requiredElitXp
+                extraXp += freeXP - requiredElitXp
                 requiredElitXp = 0
         descriptionPostfix = wotxp.config.get("topVehicle", "[{{elitBattleCount}}|{{requiredElitXp}}]") \
             if requiredElitXp > 0 else wotxp.config.get("topVehicleResearchCompleted", " [+{{extraXp}}]")
