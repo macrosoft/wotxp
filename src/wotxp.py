@@ -61,7 +61,7 @@ def new_cm_as_tankmenResponseS(self, data):
         values['nextSkillXpCost'] = wotxp.numWithPostfix(tankman.getNextSkillXpCost())
         rankPrefix = ''
         rolePrefix = ''
-        if tankman.hasNewSkill:
+        if tankman.newSkillCount[0] > 0:
             rankPrefix = wotxp.config.get("tankmanNewSkillRankPrefix", "[+{{freeXp}}]")
             rolePrefix = wotxp.config.get("tankmanNewSkillRolePrefix", "")
         else:
