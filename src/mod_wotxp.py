@@ -22,9 +22,9 @@ class WotXp(object):
         sb = res['Paths']
         vals = sb.values()[0:2]
         for vl in vals:
-            path = vl.asString + '/scripts/client/mods/'
+            path = vl.asString + '/scripts/client/gui/mods/'
             if os.path.isdir(path):
-                conf_file = path + 'wotxp.json'
+                conf_file = path + 'mod_wotxp.json'
                 if os.path.isfile(conf_file):
                     with open(conf_file) as data_file:
                         self.config = json.load(data_file)
